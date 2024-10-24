@@ -1,9 +1,8 @@
 <.header>
-  Expense <%= @expense.id %>
-  <:subtitle>This is a expense record from your database.</:subtitle>
+  <span style="color: #3c84ac;">Expense</span>
   <:actions>
     <.link href={~p"/expenses/#{@expense}/edit"}>
-      <.button>Edit expense</.button>
+      <.button style="background-color: #3c84ac">Edit expense</.button>
     </.link>
   </:actions>
 </.header>
@@ -15,4 +14,6 @@
   <:item title="Date"><%= @expense.date %></:item>
 </.list>
 
-<.back navigate={~p"/expenses"}>Back to expenses</.back>
+<.back navigate={~p"/expenses"}>
+  <span style="color: #3c84ac;">Back to expenses</span>
+</.back>

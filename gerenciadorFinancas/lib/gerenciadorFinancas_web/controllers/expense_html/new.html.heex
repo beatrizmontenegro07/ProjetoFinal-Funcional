@@ -1,8 +1,12 @@
 <.header>
-  New Expense
-  <:subtitle>Use this form to manage expense records in your database.</:subtitle>
+  <span style="color: #3c84ac;">New Expense</span>
+  <:subtitle>
+  <span style="color: #8ccaef;">Fill out the form to register a new expense.</span></:subtitle>
 </.header>
+
 
 <.expense_form changeset={@changeset} action={~p"/expenses"} />
 
-<.back navigate={~p"/expenses"}>Back to expenses</.back>
+<.back navigate={~p"/expenses"}>
+  <span style="color: #3c84ac;">Back to expenses</span>
+</.back>

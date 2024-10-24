@@ -1,8 +1,12 @@
 <.header>
-  Edit Expense <%= @expense.id %>
-  <:subtitle>Use this form to manage expense records in your database.</:subtitle>
+  <span style="color: #3c84ac;">Edit Expense</span>
+  <:subtitle>
+    <span style="color: #8ccaef;">Edit your expense information.</span>
+  </:subtitle>
 </.header>
 
 <.expense_form changeset={@changeset} action={~p"/expenses/#{@expense}"} />
 
-<.back navigate={~p"/expenses"}>Back to expenses</.back>
+<.back navigate={~p"/expenses"}>
+  <span style="color: #3c84ac;">Back to expenses</span>
+</.back>
