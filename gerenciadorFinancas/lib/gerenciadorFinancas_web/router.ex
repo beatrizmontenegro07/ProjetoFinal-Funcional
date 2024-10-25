@@ -18,6 +18,7 @@ defmodule GerenciadorFinancasWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/expenses/chart", ExpenseController, :chart
     resources "/expenses", ExpenseController
   end
 

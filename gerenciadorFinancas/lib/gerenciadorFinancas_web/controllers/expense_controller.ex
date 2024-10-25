@@ -59,4 +59,25 @@ defmodule GerenciadorFinancasWeb.ExpenseController do
     |> put_flash(:info, "Expense deleted successfully.")
     |> redirect(to: ~p"/expenses")
   end
+
+  def chart(conn, _params) do
+    # Agrupa as despesas
+    expenses = Finance.list_expenses()
+
+    # Agrupa as despesas por categoria
+    amount_by_category =
+      expenses
+      |> Enum.group_by(& &1.category)
+      |> Enum.map(fn {category, expenses} ->
+        total = Enum.reduce(expenses, Decimal.new(0), fn expense, acc -> Decimal.add(acc, expense.amount) end)
+        {category, Decimal.to_float(total)}
+      end)
+
+    IO.inspect(amount_by_category, label: "Amount by Category")
+    IO.inspect(Enum.map(expenses, & &1.category), label: "Categories")
+  IO.inspect(Enum.map(expenses, & Decimal.to_float(&1.amount)), label: "Amounts")
+
+
+    render(conn, "chart.html", amount_by_category: amount_by_category)
+  end
 end
