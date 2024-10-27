@@ -56,11 +56,7 @@
     var ctx = document.getElementById('myChart').getContext('2d');
     
     var labels = <%= raw(Jason.encode!(@amount_by_category |> Enum.map(fn {category, _} -> category end))) %>;
-    var data = <%= raw(Jason.encode!(@amount_by_category |> Enum.map(fn {_, total} -> total end))) %>;
-
-    // Para debug, remova as linhas se não forem necessárias
-    console.log("Labels:", labels);  
-    console.log("Data:", data);        
+    var data = <%= raw(Jason.encode!(@amount_by_category |> Enum.map(fn {_, total} -> total end))) %>; 
 
     var chart = new Chart(ctx, {
       type: 'bar',

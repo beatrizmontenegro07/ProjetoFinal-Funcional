@@ -102,10 +102,26 @@ defmodule GerenciadorFinancas.Finance do
     Expense.changeset(expense, attrs)
   end
 
+  #lista despesas com base no ano e mes
   def list_expenses_month_year(month, year) do
     from(e in Expense,
       where: fragment("EXTRACT(MONTH FROM ?)", e.date) == ^month and fragment("EXTRACT(YEAR FROM ?)", e.date) == ^year
     )
+    |> Repo.all()
+  end
+
+  #lista despesas com base no mes
+  def list_expenses_month(month) do
+    from(e in Expense,
+      where: fragment("EXTRACT(MONTH FROM ?)", e.date) == ^month)
+    |> Repo.all()
+  end
+
+
+  #lista despesas com base no ano
+  def list_expenses_year(year) do
+    from(e in Expense,
+      where: fragment("EXTRACT(YEAR FROM ?)", e.date) == ^year)
     |> Repo.all()
   end
 end

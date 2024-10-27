@@ -25,7 +25,7 @@
 <form action="/expenses/filter" method="get">
   <label style="font-size: 16px;" for="year">Year: </label>
   <select style="height: 40px;" name="year" id="year">
-    <option value="">Select Year</option>
+    <option value="">All Years</option>
     <%= for y <- 2020..Date.utc_today().year do %>
       <option value={y}><%= y %></option>
     <% end %> 
@@ -33,7 +33,7 @@
   &nbsp;
   <label style="font-size: 16px;" for="month">Month: </label>
   <select style="height: 40px;" name="month" id="month">
-    <option value="">Select Month</option>
+    <option value="">All Months</option>
     <option value="1">January</option>
     <option value="2">February</option>
     <option value="3">March</option>

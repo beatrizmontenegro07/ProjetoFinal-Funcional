@@ -62,11 +62,17 @@ defmodule GerenciadorFinancasWeb.ExpenseController do
 
   def chart(conn, %{"month" => month, "year" => year}) do
     # Converte os parâmetros para inteiro e busca os expenses filtrados
-    month = String.to_integer(month)
-    year = String.to_integer(year)
+    month = if month == "", do: nil, else: String.to_integer(month)
+    year = if year == "", do: nil, else: String.to_integer(year)
 
     # Agrupa as despesas
-    expenses = Finance.list_expenses_month_year(month, year)
+    expenses =
+      case {month, year} do
+        {nil, nil} -> Finance.list_expenses()
+        {nil, year} -> Finance.list_expenses_year(year)
+        {month, nil} -> Finance.list_expenses_month(month)
+        {year, month} -> Finance.list_expenses_month_year(year, month)
+      end
 
     # Agrupa as despesas por categoria
     amount_by_category =
@@ -82,7 +88,7 @@ defmodule GerenciadorFinancasWeb.ExpenseController do
     IO.inspect(Enum.map(expenses, & Decimal.to_float(&1.amount)), label: "Amounts")
 
 
-    render(conn, "chart.html", amount_by_category: amount_by_category)
+    render(conn, "chart.html", amount_by_category: amount_by_category, month: month, year: year)
   end
 
   def chart(conn, _params) do
@@ -109,10 +115,17 @@ defmodule GerenciadorFinancasWeb.ExpenseController do
   #funcoes para filtrar por ano e data
   def filter(conn, %{"month" => month, "year" => year}) do
     # Converte os parâmetros para inteiro e busca os expenses filtrados
-    month = String.to_integer(month)
-    year = String.to_integer(year)
+    month = if month == "", do: nil, else: String.to_integer(month)
+    year = if year == "", do: nil, else: String.to_integer(year)
 
-    expenses = Finance.list_expenses_month_year(month, year)
+    expenses =
+      case {month, year} do
+        {nil, nil} -> Finance.list_expenses()
+        {nil, year} -> Finance.list_expenses_year(year)
+        {month, nil} -> Finance.list_expenses_month(month)
+        {year, month} -> Finance.list_expenses_month_year(year, month)
+      end
+
     expenses_data = Enum.map(expenses, fn expense ->
       %{
         date: expense.date,
