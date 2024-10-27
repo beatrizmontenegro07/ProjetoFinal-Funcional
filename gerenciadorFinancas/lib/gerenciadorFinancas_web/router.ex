@@ -19,6 +19,7 @@ defmodule GerenciadorFinancasWeb.Router do
 
     get "/", PageController, :home
     get "/expenses/chart", ExpenseController, :chart
+    get "/expenses/filter", ExpenseController, :filter
     resources "/expenses", ExpenseController
   end
 

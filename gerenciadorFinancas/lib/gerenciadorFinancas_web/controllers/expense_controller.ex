@@ -80,4 +80,39 @@ defmodule GerenciadorFinancasWeb.ExpenseController do
 
     render(conn, "chart.html", amount_by_category: amount_by_category)
   end
+
+  #funcoes para filtrar por ano e data
+  def filter(conn, %{"month" => month, "year" => year}) do
+    # Converte os parâmetros para inteiro e busca os expenses filtrados
+    month = String.to_integer(month)
+    year = String.to_integer(year)
+
+    expenses = Finance.list_expenses_month_year(month, year)
+    expenses_data = Enum.map(expenses, fn expense ->
+      %{
+        date: expense.date,
+        description: expense.description,
+        category: expense.category,
+        amount: expense.amount
+      }
+    end)
+
+    render(conn, "filter.html", dados: expenses_data)
+  end
+
+  def filter(conn, _paramns) do
+    expenses = Finance.list_expenses()
+    IO.puts("Boa noite");
+    IO.inspect(Finance.list_expenses_month_year(10, 23))
+    expenses_data = Enum.map(expenses, fn expense ->
+      %{
+        date: expense.date,
+        description: expense.description,
+        category: expense.category,
+        amount: expense.amount
+      }
+    end)
+
+    render(conn, "filter.html", dados: expenses_data)
+  end
 end
