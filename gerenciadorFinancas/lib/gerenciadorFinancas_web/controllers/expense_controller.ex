@@ -60,6 +60,31 @@ defmodule GerenciadorFinancasWeb.ExpenseController do
     |> redirect(to: ~p"/expenses")
   end
 
+  def chart(conn, %{"month" => month, "year" => year}) do
+    # Converte os parâmetros para inteiro e busca os expenses filtrados
+    month = String.to_integer(month)
+    year = String.to_integer(year)
+
+    # Agrupa as despesas
+    expenses = Finance.list_expenses_month_year(month, year)
+
+    # Agrupa as despesas por categoria
+    amount_by_category =
+      expenses
+      |> Enum.group_by(& &1.category)
+      |> Enum.map(fn {category, expenses} ->
+        total = Enum.reduce(expenses, Decimal.new(0), fn expense, acc -> Decimal.add(acc, expense.amount) end)
+        {category, Decimal.to_float(total)}
+      end)
+
+    IO.inspect(amount_by_category, label: "Amount by Category")
+    IO.inspect(Enum.map(expenses, & &1.category), label: "Categories")
+    IO.inspect(Enum.map(expenses, & Decimal.to_float(&1.amount)), label: "Amounts")
+
+
+    render(conn, "chart.html", amount_by_category: amount_by_category)
+  end
+
   def chart(conn, _params) do
     # Agrupa as despesas
     expenses = Finance.list_expenses()
@@ -75,7 +100,7 @@ defmodule GerenciadorFinancasWeb.ExpenseController do
 
     IO.inspect(amount_by_category, label: "Amount by Category")
     IO.inspect(Enum.map(expenses, & &1.category), label: "Categories")
-  IO.inspect(Enum.map(expenses, & Decimal.to_float(&1.amount)), label: "Amounts")
+    IO.inspect(Enum.map(expenses, & Decimal.to_float(&1.amount)), label: "Amounts")
 
 
     render(conn, "chart.html", amount_by_category: amount_by_category)
@@ -102,7 +127,6 @@ defmodule GerenciadorFinancasWeb.ExpenseController do
 
   def filter(conn, _paramns) do
     expenses = Finance.list_expenses()
-    IO.puts("Boa noite");
     IO.inspect(Finance.list_expenses_month_year(10, 23))
     expenses_data = Enum.map(expenses, fn expense ->
       %{

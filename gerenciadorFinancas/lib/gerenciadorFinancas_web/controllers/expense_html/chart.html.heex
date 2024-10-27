@@ -1,7 +1,56 @@
-<h2 style="color: #3c84ac;">Expense chart by category</h2>
-<canvas id="myChart" width="400" height="400"></canvas>
+<.header>
+  <span style="color: #3c84ac;">Expense chart by category</span>
+</.header>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style> 
+.busca {
+  border-radius: 10px;
+  background-color: #3c84ac;
+  text-aling: center;
+  color: white;
+  width: 80px;
+  height: 35px;
+  cursor: pointer;
+  float: right;
+}
+</style>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <br>
+  <form action="/expenses/chart" method="get">
+    <label style="font-size: 16px;" for="year">Year: </label>
+    <select style="height: 40px;" name="year" id="year">
+      <option value="">All Years</option>
+      <%= for y <- 2020..Date.utc_today().year do %>
+        <option value={y}><%= y %></option>
+      <% end %> 
+    </select>
+    &nbsp;
+    <label style="font-size: 16px;" for="month">Month: </label>
+    <select style="height: 40px;" name="month" id="month">
+      <option value="">All Months</option>
+      <option value="1">January</option>
+      <option value="2">February</option>
+      <option value="3">March</option>
+      <option value="4">April</option>
+      <option value="5">May</option>
+      <option value="6">June</option>
+      <option value="7">July</option>
+      <option value="8">August</option>
+      <option value="9">September</option>
+      <option value="10">October</option>
+      <option value="11">November</option>
+      <option value="12">December</option>
+    </select>
+
+    <button class="busca" type="submit">Search</button>
+  </form>
+  <br>
+
+</body>
+
+<canvas id="myChart" width="400" height="400"></canvas>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -39,3 +88,4 @@
 <.back navigate={~p"/expenses"}>
   <span style="color: #3c84ac;">Back to expenses</span>
 </.back>
+
