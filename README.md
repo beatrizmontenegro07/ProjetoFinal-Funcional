@@ -32,9 +32,6 @@ Para executar a aplicação, você precisa ter algumas dependências instaladas:
 
 ## Instale as dependências
 mix deps.get  
-cd assets  
-npm install  
-cd ..  
 
 ## Executando a Aplicação
 Para iniciar o servidor Phoenix, use o comando:  
