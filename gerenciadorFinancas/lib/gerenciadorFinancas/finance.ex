@@ -124,4 +124,52 @@ defmodule GerenciadorFinancas.Finance do
       where: fragment("EXTRACT(YEAR FROM ?)", e.date) == ^year)
     |> Repo.all()
   end
+
+  @doc """
+  Returns a list of expenses filtered by category.
+
+  ## Examples
+
+      iex> list_expenses_by_category("Food")
+      [%Expense{}, ...]
+  """
+  def list_expenses_by_category(category) do
+    from(e in Expense,
+      where: e.category == ^category
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Returns a list of expenses filtered by month, year, and category.
+
+  ## Examples
+
+      iex> list_expenses_by_month_year_category(10, 2023, "Food")
+      [%Expense{}, ...]
+  """
+  def list_expenses_by_month_year_category(year, month, category) do
+    from(e in Expense,
+      where: fragment("EXTRACT(MONTH FROM ?)", e.date) == ^month and
+           fragment("EXTRACT(YEAR FROM ?)", e.date) == ^year and
+           e.category == ^category
+    )
+    |> Repo.all()
+  end
+
+  @doc """
+  Returns a list of all unique categories.
+
+  ## Examples
+
+    iex> list_categories()
+    ["Food", "Transport", "Health", ...]
+  """
+  def list_categories do
+    Expense
+    |> select([e], e.category)
+    |> distinct(true)
+    |> Repo.all()
+end
+
 end

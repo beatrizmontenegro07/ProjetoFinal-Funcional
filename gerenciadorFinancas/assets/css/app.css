@@ -3,3 +3,19 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+
+body {
+  background-color: #ffffff ;
+}
+
+header.white-background {
+    background-color: #ffffff !important;
+}
+
+.actions-text span {
+    color: #4169E1 !important;
+}
+
+.text-royal-blue {
+    color: #4169E1 !important;
+}

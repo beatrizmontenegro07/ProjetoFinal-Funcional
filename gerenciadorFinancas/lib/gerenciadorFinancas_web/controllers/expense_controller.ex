@@ -113,17 +113,20 @@ defmodule GerenciadorFinancasWeb.ExpenseController do
   end
 
   #funcoes para filtrar por ano e data
-  def filter(conn, %{"month" => month, "year" => year}) do
+  def filter(conn, %{"month" => month, "year" => year, "category" => category}) do
+    categories = Finance.list_categories()
     # Converte os parâmetros para inteiro e busca os expenses filtrados
     month = if month == "", do: nil, else: String.to_integer(month)
     year = if year == "", do: nil, else: String.to_integer(year)
 
     expenses =
-      case {month, year} do
-        {nil, nil} -> Finance.list_expenses()
-        {nil, year} -> Finance.list_expenses_year(year)
-        {month, nil} -> Finance.list_expenses_month(month)
-        {year, month} -> Finance.list_expenses_month_year(year, month)
+      case {month, year, category} do
+        {nil, nil, ""} -> Finance.list_expenses()
+        {nil, nil, category} -> Finance.list_expenses_by_category(category)
+        {nil, year,  ""} -> Finance.list_expenses_year(year)
+        {month, nil,  ""} -> Finance.list_expenses_month(month)
+        {year, month, nil} -> Finance.list_expenses_month_year(year, month)
+      {year, month, category} -> Finance.list_expenses_by_month_year_category(year, month, category)
       end
 
     expenses_data = Enum.map(expenses, fn expense ->

@@ -201,8 +201,8 @@ defmodule GerenciadorFinancasWeb.CoreComponents do
 
   def simple_form(assigns) do
     ~H"""
-    <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+    <.form :let={f} for={@for} as={@as} {@rest} style="background-color: #ffffff;">
+      <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -427,16 +427,18 @@ defmodule GerenciadorFinancasWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
+    <header class={[@actions != [] && "flex items-center justify-between gap-6", @class, "bg-white"]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-4xl font-semibold leading-8 text-zinc-800">
           <%= render_slot(@inner_block) %>
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+        <p class="mt-2 text-sm leading-6 text-royal-blue">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
-      <div class="flex-none"><%= render_slot(@actions) %></div>
+      <div class="flex-none actions-text">
+        <%= render_slot(@actions) %>
+      </div>
     </header>
     """
   end
@@ -477,8 +479,8 @@ defmodule GerenciadorFinancasWeb.CoreComponents do
       <table class="w-[40rem] mt-11 sm:w-full">
         <thead class="text-sm text-left leading-6 text-zinc-500">
           <tr>
-            <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
-            <th :if={@action != []} class="relative p-0 pb-4">
+            <th :for={col <- @col} class="p-0 pb-4 pr-6 font-bold"><%= col[:label] %></th>
+            <th :if={@action != []} class="relative p-0 pb-4 font-bold">
               <span class="sr-only"><%= gettext("Actions") %></span>
             </th>
           </tr>
